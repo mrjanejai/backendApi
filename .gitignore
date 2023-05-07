@@ -40,3 +40,6 @@ typings
 # .NET compiled files
 bin
 obj
+*.vsidx
+*.v2
+*.v2
