@@ -43,3 +43,10 @@ obj
 *.vsidx
 *.v2
 *.v2
+*.1
+*.1
+.vs/WebApi/DesignTimeBuild/.dtbcache.v2
+*.vsidx
+*.vsidx
+*.v2
+.vs/WebApi/v17/.suo
