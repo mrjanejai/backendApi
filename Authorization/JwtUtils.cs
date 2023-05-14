@@ -40,7 +40,7 @@ public class JwtUtils : IJwtUtils
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-            Expires = DateTime.UtcNow.AddMinutes(15),
+            Expires = DateTime.UtcNow.AddDays(1),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -49,7 +49,7 @@ public class JwtUtils : IJwtUtils
 
     public int? ValidateJwtToken(string token)
     {
-        if (token == null)
+        if (token == null|| token == "null")
             return null;
 
         var tokenHandler = new JwtSecurityTokenHandler();
@@ -73,6 +73,17 @@ public class JwtUtils : IJwtUtils
 
             // return user id from JWT token if validation successful
             return userId;
+        }
+        catch (SecurityTokenExpiredException)
+        {
+            // handle expired token here
+            Console.WriteLine("Token has expired.");
+            return null;
+        }
+        catch (ArgumentException)
+        {
+            // return null if validation fails
+            return null;
         }
         catch
         {
