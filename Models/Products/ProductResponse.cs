@@ -5,21 +5,19 @@ using WebApi.Entities;
 
 public class ProductResponse
 {
-    public int id { get; set; }
-    public string name { get; set; }
-    public string createby { get; set; }
-    public DateTime createdate { get; set; }
-    public string updateby { get; set; }
-    public DateTime updatedate { get; set; }
-
-    public ProductResponse(int id_, string name_, string createby_, DateTime createdate_, string updateby_, DateTime updatedate_)
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string CreateBy { get; set; }
+    public DateTime CreateDate { get; set; }
+    public string UpdateBy { get; set; }
+    public DateTime UpdateDate { get; set; }
+    public ProductResponse(int id, string name, string createBy, DateTime createDate, string updateBy, DateTime updateDate)
     {
-        this.id = id_;
-        this.name = name_;
-        this.createby = createby_;
-        this.createdate = createdate_;
-        this.updateby = updateby_;
-        this.updatedate = updatedate_;
+        Id = id;
+        Name = name;
+        CreateBy = createBy;
+        CreateDate = createDate;
+        UpdateBy = updateBy;
+        UpdateDate = updateDate;
     }
 }
-

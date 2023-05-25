@@ -8,6 +8,7 @@ using WebApi.Models.Users;
 using WebApi.Authorization;
 using System.Security.Cryptography;
 using System.Text;
+using AutoMapper;
 
 public interface IUserService
 {
@@ -16,6 +17,9 @@ public interface IUserService
     void RevokeToken(string token, string ipAddress);
     IEnumerable<User> GetAll();
     User GetById(int id);
+    void Create(CreateRequest model);
+    void Update(int id, UpdateRequest model);
+    void Delete(int id);
 }
 
 public class UserService : IUserService
@@ -23,20 +27,23 @@ public class UserService : IUserService
     private DataContext _context;
     private IJwtUtils _jwtUtils;
     private readonly AppSettings _appSettings;
+    private readonly IMapper _mapper;
 
     public UserService(
         DataContext context,
         IJwtUtils jwtUtils,
-        IOptions<AppSettings> appSettings)
+        IOptions<AppSettings> appSettings,
+        IMapper mapper)
     {
         _context = context;
         _jwtUtils = jwtUtils;
         _appSettings = appSettings.Value;
+        _mapper = mapper;
     }
 
     public AuthenticateResponse Authenticate(AuthenticateRequest model, string ipAddress)
     {
-        var user = _context.Users.SingleOrDefault(x => x.Username == model.Username && x.PasswordHash == MD5Hash(model.Password));
+        var user = _context.Users.SingleOrDefault(x => x.Email == model.Email && x.PasswordHash == MD5Hash(model.Password));
         //var user = _users.SingleOrDefault(x => x.Username == model.Username && x.Password == model.Password);
 
         // validate
@@ -54,8 +61,8 @@ public class UserService : IUserService
         removeOldRefreshTokens(user);
 
         // save changes to db
-        _context.Update(user);
-        _context.SaveChanges();
+        //_context.Update(user);
+        //_context.SaveChanges();
 
         return new AuthenticateResponse(user, jwtToken, refreshToken.Token);
     }
@@ -120,6 +127,12 @@ public class UserService : IUserService
     }
 
     // helper methods
+    private User getUser(int id)
+    {
+        var user = _context.Users.Find(id);
+        if (user == null) throw new KeyNotFoundException("User not found");
+        return user;
+    }
 
     private User getUserByRefreshToken(string token)
     {
@@ -185,5 +198,82 @@ public class UserService : IUserService
         }
 
         return strBuilder.ToString();
+    }
+    public void Create(CreateRequest model)
+    {
+        // validate
+        if (_context.Users.Any(x => x.Email == model.Email))
+            throw new AppException("User with the email '" + model.Email + "' already exists");
+
+        // map model to new user object
+        var user = _mapper.Map<User>(model);
+
+        // hash password
+        user.PasswordHash = MD5Hash(model.Password); //BCrypt.HashPassword(model.Password);
+
+        // save user
+        _context.Users.Add(user);
+        _context.SaveChanges();
+    }
+    public void Update(int id, UpdateRequest model)
+    {
+        //var user = getUser(id);
+
+        //// validate
+        //if (!string.IsNullOrEmpty(model.Email))
+        //{
+        //    // update Email if it's not null or empty
+        //    user.Email = model.Email;
+        //}
+        //if (model.Email != user.Email && _context.Users.Any(x => x.Email == model.Email))
+        //    throw new AppException("User with the email '" + model.Email + "' already exists");
+
+        //// hash password if it was entered
+        //if (!string.IsNullOrEmpty(model.Password))
+        //    user.PasswordHash = MD5Hash(model.Password);
+
+        //// copy model to user and save
+        //_mapper.Map(model, user);
+        //_context.Users.Update(user);
+        //_context.SaveChanges();
+
+        var user = getUser(id);
+
+        // Validate
+        if (!string.IsNullOrEmpty(user.Email) && _context.Users.Any(x => x.Email == user.Email && x.Id != id))
+        {
+            throw new AppException("User with the email '" + user.Email + "' already exists");
+        }
+
+        // Hash password if it was entered
+        if (!string.IsNullOrEmpty(model.Password))
+        {
+            user.PasswordHash = MD5Hash(model.Password);
+        }
+        if (string.IsNullOrEmpty(model.Email))
+        {
+            //user.Email = model.Email;
+            model.Email = user.Email;
+        }
+        if (string.IsNullOrEmpty(model.Title))
+        {
+            //user.Title = model.Title;
+            model.Title = user.Title;
+        }
+
+        // Copy model to user
+        _mapper.Map(model, user);
+
+
+        // Save
+        _context.Users.Update(user);
+        _context.SaveChanges();
+    }
+
+    public void Delete(int id)
+    {
+        var user = getUser(id);
+        _context.Users.Remove(user);
+        _context.SaveChanges();
     }
 }

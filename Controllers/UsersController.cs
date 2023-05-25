@@ -5,6 +5,8 @@ using WebApi.Authorization;
 using WebApi.Models.Users;
 using WebApi.Services;
 using Microsoft.AspNetCore.Http;
+using AutoMapper;
+using WebApi.Entities;
 
 [Authorize]
 [ApiController]
@@ -13,11 +15,13 @@ public class UsersController : ControllerBase
 {
     private IUserService _userService;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private IMapper _mapper;
 
-    public UsersController(IUserService userService, IHttpContextAccessor httpContextAccessor)
+    public UsersController(IUserService userService, IHttpContextAccessor httpContextAccessor, IMapper mapper)
     {
         _userService = userService;
         _httpContextAccessor = httpContextAccessor;
+        _mapper = mapper;
     }
 
     [AllowAnonymous]
@@ -71,6 +75,28 @@ public class UsersController : ControllerBase
     {
         var user = _userService.GetById(id);
         return Ok(user.RefreshTokens);
+    }
+
+    [AllowAnonymous]
+    [HttpPost]
+    public IActionResult Create(CreateRequest model)
+    {
+        _userService.Create(model);
+        return Ok(new { message = "User created" });
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, UpdateRequest model)
+    {
+        _userService.Update(id, model);
+        return Ok(new { message = "User updated" });
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        _userService.Delete(id);
+        return Ok(new { message = "User deleted" });
     }
 
     // helper methods

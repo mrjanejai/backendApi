@@ -15,7 +15,7 @@ public class JwtMiddleware
         _appSettings = appSettings.Value;
     }
 
-    public async Task Invoke(HttpContext context, IUserService userService, IJwtUtils jwtUtils)
+    public async Task Invoke(HttpContext context, IUserService userService, IProductService productService, IJwtUtils jwtUtils)
     {
         var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         var userId = jwtUtils.ValidateJwtToken(token);
@@ -23,6 +23,9 @@ public class JwtMiddleware
         {
             // attach user to context on successful jwt validation
             context.Items["User"] = userService.GetById(userId.Value);
+
+            // You can now use productService to perform operations on products
+            //var product = productService.GetById(userId.Value);
         }
 
         await _next(context);

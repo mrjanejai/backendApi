@@ -28,7 +28,7 @@ public class AuthenticateResponse
         Id = user.Id;
         FirstName = user.FirstName;
         LastName = user.LastName;
-        Username = user.Username;
+        //Username = user.Username;
         expiresAt = DateTime.UtcNow.AddDays(1).ToString();
         AuthenticationToken = jwtToken;
         RefreshToken = refreshToken;

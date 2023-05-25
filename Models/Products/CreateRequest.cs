@@ -1,14 +1,13 @@
-﻿namespace WebApi.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
-using System.Text.Json.Serialization;
+namespace WebApi.Models.Products;
 
-public class Product
+public class CreateRequest
 {
-    public int Id { get; set; }
+    [Required]
     public string Name { get; set; }
     public string CreateBy { get; set; }
     public DateTime CreateDate { get; set; }
     public string UpdateBy { get; set; }
     public DateTime UpdateDate { get; set; }
 }
-
