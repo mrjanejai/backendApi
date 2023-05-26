@@ -30,6 +30,7 @@ public class DataContext : DbContext
     public DbSet<nondrugitem> nondrugitems { get; set;}
     public DbSet<drugitems> drugitems { get; set; }
     public DbSet<pttype> pttype { get; set; }
+    public DbSet<IptOperCodeE> ipt_oper_code { get; set; }
 
 }
 
@@ -50,6 +51,6 @@ public class HisContext : DbContext
     public DbSet<ErOperCodeE> er_oper_code { get; set;}
     public DbSet<nondrugitem> nondrugitems { get; set; }
     public DbSet<drugitems> drugitems { get; set; }
-
     public DbSet<pttype> pttype { get; set; }
+    public DbSet<IptOperCodeE> ipt_oper_code { get; set; }
 }

@@ -33,6 +33,8 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddScoped<IErOperCodeService, ErOperCodeSync>();
     services.AddScoped<INonDrugItemSyncService, NonDrugItemSyncService>();
     services.AddScoped<IDrugItemSyncService, DrugItemSyncService>();
+    services.AddScoped<IPttypeService,PttypeSyncService>();
+    services.AddScoped<IIptOperCodeService,IptOperCodeService>();
     services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
     // Add AutoMapper
