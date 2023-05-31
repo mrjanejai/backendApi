@@ -35,6 +35,7 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddScoped<IDrugItemSyncService, DrugItemSyncService>();
     services.AddScoped<IPttypeService,PttypeSyncService>();
     services.AddScoped<IIptOperCodeService,IptOperCodeService>();
+    services.AddScoped<IKskdepartmentService,KskdepartmentService>();
     services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
     // Add AutoMapper

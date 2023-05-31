@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApi.Services;
+using WebApi.Authorization;
 
 namespace WebApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class SyncsController : ControllerBase
@@ -13,9 +15,10 @@ namespace WebApi.Controllers
         private readonly IDrugItemSyncService _drugItemSyncService;
         private readonly IPttypeService _pttypeService;
         private readonly IIptOperCodeService _iptopCodeService;
+        private readonly IKskdepartmentService _kskdepartmentService;
 
         public SyncsController(IIcdSyncService icdSyncService, IErOperCodeService erOperCodeService, INonDrugItemSyncService nonDrugItemSyncService
-        ,IDrugItemSyncService drugItemSyncService, IPttypeService pttypeService, IIptOperCodeService iptopCodeService) // new service in constructor
+        ,IDrugItemSyncService drugItemSyncService, IPttypeService pttypeService, IIptOperCodeService iptopCodeService, IKskdepartmentService kskdepartmentService) // new service in constructor
         {
             _icdSyncService = icdSyncService;
             _erOperCodeService = erOperCodeService;
@@ -23,6 +26,7 @@ namespace WebApi.Controllers
             _drugItemSyncService = drugItemSyncService;
             _pttypeService = pttypeService;
             _iptopCodeService = iptopCodeService;
+            _kskdepartmentService = kskdepartmentService;
         }
 
         [HttpPost("icds")]
@@ -65,6 +69,13 @@ namespace WebApi.Controllers
         public async Task<IActionResult> SyncIptOperCode()
         {
             await _iptopCodeService.SyncAsync();
+            return Ok();
+        }
+
+        [HttpPost("kskdepartment")]
+        public async Task<IActionResult> SyncKskdepartment()
+        {
+            await _kskdepartmentService.SyncAsync();
             return Ok();
         }
 
