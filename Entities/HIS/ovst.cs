@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApi.Entities.HIS
 {
@@ -58,5 +59,73 @@ namespace WebApi.Entities.HIS
         public int? pt_capability_type_id { get; set; }
         public string? at_hospital { get; set; }
         public string? ovst_key { get; set; }
+
+        public Dictionary<string, object> ToInsertFieldValues()
+        {
+            return new Dictionary<string, object>()
+            {
+                { "hos_guid", hos_guid },
+                { "vn", vn },
+                { "hn", hn },
+                { "an", an },
+                { "vstdate", vstdate },
+                { "vsttime", vsttime },
+                { "doctor", doctor },
+                { "hospmain", hospmain },
+                { "hospsub", hospsub },
+                { "oqueue", oqueue },
+                { "ovstist", ovstist },
+                { "ovstost", ovstost },
+                { "pttype", pttype },
+                { "pttypeno", pttypeno },
+                { "rfrics", rfrics },
+                { "rfrilct", rfrilct },
+                { "rfrocs", rfrocs },
+                { "rfrolct", rfrolct },
+                { "spclty", spclty },
+                { "rcpt_disease", rcpt_disease },
+                { "hcode", hcode },
+                { "cur_dep", cur_dep },
+                { "cur_dep_busy", cur_dep_busy },
+                { "last_dep", last_dep },
+                { "cur_dep_time", cur_dep_time },
+                { "rx_queue", rx_queue },
+                { "diag_text", diag_text },
+                { "pt_subtype", pt_subtype },
+                { "main_dep", main_dep },
+                { "main_dep_queue", main_dep_queue },
+                { "finance_summary_date", finance_summary_date },
+                { "visit_type", visit_type },
+                { "node_id", node_id },
+                { "contract_id", contract_id },
+                { "waiting", waiting },
+                { "rfri_icd10", rfri_icd10 },
+                { "o_refer_number", o_refer_number },
+                { "has_insurance", has_insurance },
+                { "i_refer_number", i_refer_number },
+                { "refer_type", refer_type },
+                { "o_refer_dep", o_refer_dep },
+                { "staff", staff },
+                { "command_doctor", command_doctor },
+                { "send_person", send_person },
+                { "pt_priority", pt_priority },
+                { "finance_lock", finance_lock },
+                { "oldcode", oldcode },
+                { "sign_doctor", sign_doctor },
+                { "anonymous_visit", anonymous_visit },
+                { "anonymous_vn", anonymous_vn },
+                { "pt_capability_type_id", pt_capability_type_id },
+                { "at_hospital", at_hospital },
+                { "ovst_key", ovst_key }
+            };
+        }
+
+        public Dictionary<string, object> ToUpdateKeyValues()
+        {
+            return new Dictionary<string, object>()
+            {
+                { "hos_guid", hos_guid }
+            };
+        }
     }
 }

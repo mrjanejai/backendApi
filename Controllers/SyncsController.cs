@@ -16,9 +16,16 @@ namespace WebApi.Controllers
         private readonly IPttypeService _pttypeService;
         private readonly IIptOperCodeService _iptopCodeService;
         private readonly IKskdepartmentService _kskdepartmentService;
+        private readonly IPatientService _petientService;
 
-        public SyncsController(IIcdSyncService icdSyncService, IErOperCodeService erOperCodeService, INonDrugItemSyncService nonDrugItemSyncService
-        ,IDrugItemSyncService drugItemSyncService, IPttypeService pttypeService, IIptOperCodeService iptopCodeService, IKskdepartmentService kskdepartmentService) // new service in constructor
+        public SyncsController(IIcdSyncService icdSyncService
+            , IErOperCodeService erOperCodeService
+            , INonDrugItemSyncService nonDrugItemSyncService
+            , IDrugItemSyncService drugItemSyncService
+            , IPttypeService pttypeService
+            , IIptOperCodeService iptopCodeService
+            , IKskdepartmentService kskdepartmentService
+            , IPatientService patientService) // new service in constructor
         {
             _icdSyncService = icdSyncService;
             _erOperCodeService = erOperCodeService;
@@ -27,6 +34,7 @@ namespace WebApi.Controllers
             _pttypeService = pttypeService;
             _iptopCodeService = iptopCodeService;
             _kskdepartmentService = kskdepartmentService;
+            _petientService = patientService;
         }
 
         [HttpPost("icds")]
@@ -76,6 +84,13 @@ namespace WebApi.Controllers
         public async Task<IActionResult> SyncKskdepartment()
         {
             await _kskdepartmentService.SyncAsync();
+            return Ok();
+        }
+
+        [HttpPost("patient")]
+        public async Task<IActionResult> SyncPatient()
+        {
+            await _petientService.SyncAsync();
             return Ok();
         }
 

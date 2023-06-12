@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using AutoMapper;
+using OfficeOpenXml;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,6 +37,11 @@ var builder = WebApplication.CreateBuilder(args);
     services.AddScoped<IPttypeService,PttypeSyncService>();
     services.AddScoped<IIptOperCodeService,IptOperCodeService>();
     services.AddScoped<IKskdepartmentService,KskdepartmentService>();
+    services.AddScoped<IHisService, HisService>();
+    services.AddScoped<IOpitemreceService,OpitemreceService>();
+    services.AddScoped<IPatientService, PatientService>();
+    services.AddScoped<IEclaimService, EclaimService>();
+
     services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
     // Add AutoMapper
@@ -64,6 +70,9 @@ var app = builder.Build();
 
 // configure HTTP request pipeline
 {
+    // Set the license context
+    ExcelPackage.LicenseContext = LicenseContext.NonCommercial; // Or LicenseContext.Commercial if you have a commercial license
+
     // global cors policy
     app.UseCors(x => x
         .SetIsOriginAllowed(origin => true)

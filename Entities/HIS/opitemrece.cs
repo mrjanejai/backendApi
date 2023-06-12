@@ -8,7 +8,7 @@ namespace WebApi.Entities.HIS
         public string hos_guid { get; set; }
         public string? vn { get; set; }
         public string? hn { get; set; }
-        public string? an { get; set; }
+        //public string? an { get; set; }
         public string? icode { get; set; }
         public int? qty { get; set; }
         public string? drugusage { get; set; }

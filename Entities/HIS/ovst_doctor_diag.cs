@@ -1,7 +1,10 @@
-﻿namespace WebApi.Entities.HIS
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebApi.Entities.HIS
 {
     public class ovst_doctor_diag
     {
+        [Key]
         public int ovst_doctor_diag_id { get; set; }
         public string vn { get; set; }
         public string doctor_code { get; set; }
